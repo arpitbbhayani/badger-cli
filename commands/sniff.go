@@ -37,7 +37,6 @@ var sniffCommand = &cobra.Command{
 
 		opts := badger.DefaultIteratorOptions
 		it := txn.NewIterator(opts)
-		defer it.Close()
 
 		for it.Rewind(); it.Valid() && sniffCount != 0; it.Next() {
 			item := it.Item()
@@ -52,6 +51,8 @@ var sniffCommand = &cobra.Command{
 
 			sniffCount--
 		}
+
+		it.Close()
 
 		txn.Discard()
 	},
